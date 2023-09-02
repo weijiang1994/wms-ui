@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>logo.png">
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+<style>
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  /* 滚动条滑块 */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .content>article>h1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0 10px 0;
+    padding: 0 10px;
+    border-left: 5px solid #20c997;
+    line-height: 2em;
+  }
+
+  .content>article>h2 {
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 5px 5px 5px;
+    border-bottom: 1px solid #28a745;
+  }
+
+  .content>article>h3 {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 5px 5px 5px;
+    border-bottom: 1px solid #28a745;
+  }
+
+  .content {
+    padding: 8px;
+  }
+
+  .content>article>ol {
+    padding-left: 16px;
+  }
+
+  .search-div {
+    flex-grow: 1;
+    text-align: end;
+  }
+
+  .mt-2 {
+    margin-top: 3px;
+  }
+
+  .mt-10 {
+    margin-top: 10px;
+  }
+
+  .mr-3 {
+    margin-right: 3px;
+  }
+
+  .el-message:not(:last-child) {
+    visibility: hidden;
+  }
+</style>
+
+</html>
