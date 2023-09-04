@@ -6,31 +6,23 @@
           <el-col :span="12">
             <el-card shadow="hover" :height="500">
               <div slot="header">
-                <i class="fa fa-cube mr-3" style="color: #71cc59"></i>社区概况
+                <i class="fa fa-cube mr-3" style="color: #71cc59"></i>物料概况
               </div>
               <div style="height: 200px">
                 <el-row :gutter="10">
                   <el-col :span="12">
-                    <community-card
-                      apiUrl="/community/user/info"
-                    ></community-card>
+                    <community-card apiUrl="/warehouse"></community-card>
                   </el-col>
                   <el-col :span="12">
-                    <community-card
-                      apiUrl="/community/post/info"
-                    ></community-card>
+                    <community-card apiUrl="/material"></community-card>
                   </el-col>
                 </el-row>
                 <el-row :gutter="10" class="mt-10">
                   <el-col :span="12">
-                    <community-card
-                      apiUrl="/community/comment/info"
-                    ></community-card>
+                    <community-card apiUrl="/material/out"></community-card>
                   </el-col>
                   <el-col :span="12"
-                    ><community-card
-                      apiUrl="/community/user/register"
-                    ></community-card
+                    ><community-card apiUrl="/material/in"></community-card
                   ></el-col>
                 </el-row>
               </div>
@@ -52,6 +44,10 @@
                     :icon="item.icon"
                     :title="item.title"
                     :router="item.router"
+                    v-if="
+                      $store.state.user &&
+                      $store.state.user.permissions.includes(item.permission)
+                    "
                   ></quick-link>
                 </div>
               </div>
@@ -104,24 +100,6 @@
             </el-timeline>
           </div>
         </el-card>
-
-        <el-card shadow="hover" class="mt-10">
-          <div slot="header">
-            <i class="fa fa-server mr-3" style="color: #71cc59"></i>服务器状态
-          </div>
-          <div>
-            <p>CPU使用率</p>
-            <el-progress
-              :percentage="server.cpu"
-              :color="serverColor.cpu"
-            ></el-progress>
-            <p>内存使用率</p>
-            <el-progress
-              :percentage="server.mem"
-              :color="serverColor.mem"
-            ></el-progress>
-          </div>
-        </el-card>
       </el-col>
     </el-row>
   </div>
@@ -129,11 +107,13 @@
 
 <script>
 import CommunityCard from "@/components/CommunityCard";
-import { latestAdminLog, serverStatus } from "@/api/normal";
+import { serverStatus } from "@/api/normal";
 import { visitStatistic } from "@/api/community";
 import QuickLink from "../components/QuickLink.vue";
 import Chart from "@/components/charts/Chart";
-import { merge } from "lodash";
+import { getUserInfo } from "@/api/auth";
+import { quickEntry } from "@/util/constants";
+
 export default {
   name: "Home",
   components: {
@@ -142,45 +122,9 @@ export default {
     Chart,
   },
   data() {
-    this.quickDatas = [
-      { title: "用户管理", icon: "fa fa-user fa-2x fa-fw", router: "/user" },
-      {
-        title: "帖子审核",
-        icon: "fa fa-check fa-fw fa-2x",
-        router: "/post/review",
-      },
-      {
-        title: "帖子编辑",
-        icon: "fa fa-edit fa-2x fa-fw",
-        router: "/post/edit",
-      },
-      {
-        title: "帖子类别",
-        icon: "fa fa-tag fa-2x fa-fw",
-        router: "/post/category",
-      },
-      {
-        title: "帖子主题",
-        icon: "fa fa-bookmark fa-2x fa-fw",
-        router: "/post/topic",
-      },
-      {
-        title: "评论编辑",
-        icon: "fa fa-pencil fa-fw fa-2x",
-        router: "/comment/manage",
-      },
-      {
-        title: "评论分析",
-        icon: "fa fa-paw fa-fw fa-2x",
-        router: "/comment/analysis",
-      },
-      {
-        title: "举报管理",
-        icon: "fa fa-bullhorn fa-fw fa-2x",
-        router: "/community/report",
-      },
-    ];
     return {
+      quickDatas: [],
+      userInfo: {},
       dateRange: "week",
       chart: null,
       adminLogs: [],
@@ -218,19 +162,18 @@ export default {
       },
     };
   },
-  created() {
-    latestAdminLog().then((res) => {
-      this.adminLogs = res.data;
-    });
-  },
-  mounted() {
-    this.getVisitStatistic();
-    this.getServerStatus();
-    this.timer = window.setInterval(() => {
-      setTimeout(() => {
-        this.getServerStatus();
-      }, 0);
-    }, 3 * 1000);
+  created() {},
+  async mounted() {
+    const user = await getUserInfo();
+    this.$store.commit("setUser", user.data);
+    for (let i = 0; i < quickEntry.length; i++) {
+      if (
+        this.$store.state.user &&
+        this.$store.state.user.permissions.includes(quickEntry[i].permission)
+      ) {
+        this.quickDatas.push(quickEntry[i]);
+      }
+    }
   },
   destroyed() {
     window.clearInterval(this.timer);
@@ -289,6 +232,9 @@ export default {
 }
 .flex-div-for-quick-item {
   flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 #statistics {
   height: 300px;

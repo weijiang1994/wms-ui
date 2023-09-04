@@ -1,6 +1,6 @@
 <template>
   <div id="quick-link" class="quick-link">
-    <div class="link-icon" @click="openPage()">
+    <div class="link-icon hand-cursor" @click="openPage()">
       <a><i :class="icon"></i></a>
     </div>
     <p>{{ title }}</p>
@@ -32,11 +32,12 @@ export default {
   justify-content: center;
 }
 .link-icon:hover {
-  background: cornflowerblue;
+  background: rgb(96 173 255);
 }
 .quick-link {
   text-align: center;
   margin: 8px;
   width: 100px;
+  cursor: pointer;
 }
 </style>

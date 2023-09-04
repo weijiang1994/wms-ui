@@ -13,6 +13,7 @@ import "nprogress/nprogress.css"; //这个样式必须引入
 import hljs from "highlight.js";
 //样式文件,这里我选的是sublime样式，文件里面还有其他样式可供选择
 import "highlight.js/styles/atom-one-light.css";
+import store from "./store";
 
 NProgress.inc(0.2);
 NProgress.configure({ easing: "ease", speed: 500, showSpinner: false });
@@ -31,5 +32,6 @@ Vue.directive("highlight", function (el) {
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");
