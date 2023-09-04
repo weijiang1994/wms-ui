@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "bootstrap-icons": "^1.10.5",
     "core-js": "^3.6.5",
     "echarts": "^4.7.0",
     "element-ui": "^2.15.6",

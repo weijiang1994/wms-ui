@@ -12,65 +12,63 @@
           @close="handleClose"
         >
           <el-menu-item index="/index" @click="goPage('home')">
-            <i class="fa fa-home fa-fw mr"></i>
-            <span slot="title">首页</span>
+            <i class="bi bi-house fs-16"></i>首页
           </el-menu-item>
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="bi bi-menu-button"></i>
+              <span>生产管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item
+                index="/post/review"
+                @click="goSecondPage('/post', '/review')"
+                ><i class="bi bi-upload"></i>物料出库</el-menu-item
+              >
+              <el-menu-item
+                index="/post/review"
+                @click="goSecondPage('/post', '/review')"
+                ><i class="bi bi-download"></i>物料入库</el-menu-item
+              >
+              <el-menu-item
+                index="/post/review"
+                @click="goSecondPage('/post', '/review')"
+                ><i class="bi bi-database"></i>仓库管理</el-menu-item
+              >
+              <el-menu-item
+                index="/post/edit"
+                @click="goSecondPage('/post', '/edit')"
+                ><i class="bi bi-pin-angle"></i>物料管理</el-menu-item
+              >
+            </el-menu-item-group>
+          </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="fa fa-user fa-fw mr"></i>
+              <i class="bi bi-person-lock fs-16"></i>
               <span>用户管理</span>
             </template>
             <el-menu-item-group>
               <el-menu-item
                 index="/post/review"
                 @click="goSecondPage('/post', '/review')"
-                ><i class="fa fa-check fa-fw mr"></i>帖子审核</el-menu-item
+                ><i class="bi bi-person-bounding-box"></i>用户管理</el-menu-item
               >
               <el-menu-item
                 index="/post/edit"
                 @click="goSecondPage('/post', '/edit')"
-                ><i class="fa fa-edit fa-fw mr"></i>帖子编辑</el-menu-item
+                ><i class="bi bi-key"></i>权限管理</el-menu-item
               >
               <el-menu-item
-                index="/post/category"
-                @click="goSecondPage('/post', '/category')"
-                ><i class="fa fa-tag fa-fw mr"></i>帖子类别</el-menu-item
-              >
-              <el-menu-item
-                index="/post/topic"
-                @click="goSecondPage('/post', '/topic')"
-                ><i class="fa fa-bookmark fa-fw mr"></i>帖子主题</el-menu-item
-              >
-
-              <el-menu-item
-                index="/post/tag"
-                @click="goSecondPage('/post', '/tag')"
-                ><i class="fa fa-hashtag fa-fw mr"></i>帖子标签</el-menu-item
-              >
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="fa fa-comments fa-fw mr"></i>
-              <span>评论管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item
-                index="/comment/manage"
-                @click="goSecondPage('/comment', '/manage')"
-                ><i class="fa fa-pencil fa-fw mr"></i>评论编辑</el-menu-item
-              >
-              <el-menu-item
-                index="/comment/analysis"
-                @click="goSecondPage('/comment', '/analysis')"
-                ><i class="fa fa-paw fa-fw mr"></i>评论分析</el-menu-item
+                index="/post/edit"
+                @click="goSecondPage('/post', '/edit')"
+                ><i class="bi bi-person-vcard"></i>角色管理</el-menu-item
               >
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="5">
             <template slot="title">
-              <i class="fa fa-building fa-fw mr"></i>
-              <span>社区管理</span>
+              <i class="bi bi-gear"></i>
+              <span>系统管理</span>
             </template>
             <el-menu-item-group>
               <el-menu-item
