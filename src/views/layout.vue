@@ -25,6 +25,8 @@
 import navtop from "@/components/NavTop.vue";
 import leftNav from "@/components/LeftMenu.vue";
 import Bread from "@/components/Bread.vue";
+import { getUserInfo } from "@/api/auth";
+
 export default {
   components: {
     navtop,
@@ -39,6 +41,10 @@ export default {
       },
       breadIcon: "el-icon-s-unfold",
     };
+  },
+  async mounted() {
+    const user = await getUserInfo();
+    this.$store.commit("setUser", user.data);
   },
   methods: {
     collapseLeft(toggle) {

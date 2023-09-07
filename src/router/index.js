@@ -31,6 +31,18 @@ Vue.use(VueRouter);
 //     return originalPush.call(this, location).catch(err => err)
 // }
 
+const systemRouter = [
+  {
+    path: "user/manager",
+    name: "UserManager",
+    component: () => import("@/views/system/User.vue"),
+    meta: {
+      title: "用户管理",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
+];
 const routes = [
   {
     path: "/login",
@@ -46,6 +58,7 @@ const routes = [
     component: Layout,
     redirect: "index",
     children: [
+      ...systemRouter,
       {
         path: "index",
         name: "Centre",

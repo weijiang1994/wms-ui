@@ -111,7 +111,6 @@ import { serverStatus } from "@/api/normal";
 import { visitStatistic } from "@/api/community";
 import QuickLink from "../components/QuickLink.vue";
 import Chart from "@/components/charts/Chart";
-import { getUserInfo } from "@/api/auth";
 import { quickEntry } from "@/util/constants";
 
 export default {
@@ -164,8 +163,7 @@ export default {
   },
   created() {},
   async mounted() {
-    const user = await getUserInfo();
-    this.$store.commit("setUser", user.data);
+    
     for (let i = 0; i < quickEntry.length; i++) {
       if (
         this.$store.state.user &&

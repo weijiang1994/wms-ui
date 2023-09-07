@@ -12,7 +12,8 @@
           @close="handleClose"
         >
           <el-menu-item index="/index" @click="goPage('home')">
-            <i class="bi bi-house fs-16"></i>首页
+            <i class="bi bi-house fs-16"></i>
+            <span slot="title">首页</span>
           </el-menu-item>
           <el-submenu index="2">
             <template slot="title">
@@ -21,70 +22,53 @@
             </template>
             <el-menu-item-group>
               <el-menu-item
-                index="/post/review"
-                @click="goSecondPage('/post', '/review')"
+                index="/material/out"
+                @click="$router.push('/material/out')"
                 ><i class="bi bi-upload"></i>物料出库</el-menu-item
               >
               <el-menu-item
+                v-if="user && user.permissions.includes('in-admin')"
                 index="/post/review"
                 @click="goSecondPage('/post', '/review')"
                 ><i class="bi bi-download"></i>物料入库</el-menu-item
               >
               <el-menu-item
+                v-if="user && user.permissions.includes('warehouse-admin')"
                 index="/post/review"
                 @click="goSecondPage('/post', '/review')"
                 ><i class="bi bi-database"></i>仓库管理</el-menu-item
               >
               <el-menu-item
+                v-if="user && user.permissions.includes('material-admin')"
                 index="/post/edit"
                 @click="goSecondPage('/post', '/edit')"
                 ><i class="bi bi-pin-angle"></i>物料管理</el-menu-item
               >
             </el-menu-item-group>
           </el-submenu>
-          <el-submenu index="3">
+          <el-submenu
+            index="3"
+            v-if="user && user.permissions.includes('user-admin')"
+          >
             <template slot="title">
               <i class="bi bi-person-lock fs-16"></i>
               <span>用户管理</span>
             </template>
             <el-menu-item-group>
               <el-menu-item
-                index="/post/review"
-                @click="goSecondPage('/post', '/review')"
+                index="/user/manager"
+                @click="goSecondPage('/user', '/manager')"
                 ><i class="bi bi-person-bounding-box"></i>用户管理</el-menu-item
               >
               <el-menu-item
                 index="/post/edit"
-                @click="goSecondPage('/post', '/edit')"
+                @click="goSecondPage('/permission', '/manager')"
                 ><i class="bi bi-key"></i>权限管理</el-menu-item
               >
               <el-menu-item
                 index="/post/edit"
-                @click="goSecondPage('/post', '/edit')"
+                @click="goSecondPage('/role', '/manager')"
                 ><i class="bi bi-person-vcard"></i>角色管理</el-menu-item
-              >
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="bi bi-gear"></i>
-              <span>系统管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item
-                index="/report/unread"
-                @click="goSecondPage('/report', '/unread')"
-                ><i class="fa fa-bullhorn fa-fw mr"></i>举报管理</el-menu-item
-              >
-              <el-menu-item
-                index="/visit/statistics"
-                @click="goSecondPage('/visit', '/statistics')"
-                ><i class="fa fa-pie-chart fa-fw mr"></i>访问统计</el-menu-item
-              >
-              <el-menu-item
-                index="/community/configure"
-                @click="goSecondPage('/community', '/configure')"
-                ><i class="fa fa-pie-chart fa-fw mr"></i>系统配置</el-menu-item
               >
             </el-menu-item-group>
           </el-submenu>
@@ -102,6 +86,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
   },
   beforeCreate() {},
   methods: {
