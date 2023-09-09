@@ -66,7 +66,7 @@
           <el-button size="small" type="primary">编辑</el-button
           ><el-button
             size="small"
-            type="success"
+            type="danger"
             v-if="scope.row.status == 1"
             @click="changeUserStatus(scope.row.id, 0)"
             >禁用</el-button
@@ -222,7 +222,7 @@ export default {
             message: res.msg || "操作成功",
             type: "success",
           });
-          this.getUserList();
+          this.users.find((user) => user.id === uid).status = status;
         })
         .catch((err) => {
           this.$message({
