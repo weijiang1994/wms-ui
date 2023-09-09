@@ -42,6 +42,16 @@ const systemRouter = [
       roles: ["admin"],
     },
   },
+  {
+    path: "permission/manager",
+    name: "PermissionManager",
+    component: () => import("@/views/system/Permission.vue"),
+    meta: {
+      title: "权限管理",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
 ];
 const routes = [
   {

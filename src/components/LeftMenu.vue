@@ -61,7 +61,7 @@
                 ><i class="bi bi-person-bounding-box"></i>用户管理</el-menu-item
               >
               <el-menu-item
-                index="/post/edit"
+                index="/permission/manager"
                 @click="goSecondPage('/permission', '/manager')"
                 ><i class="bi bi-key"></i>权限管理</el-menu-item
               >
