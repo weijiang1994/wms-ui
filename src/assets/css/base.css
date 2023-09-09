@@ -34,7 +34,7 @@
 }
 
 .el-form-item {
-  margin-bottom: 0px;
+  /* margin-bottom: 0px; */
 }
 
 .mt-12 {
@@ -64,4 +64,12 @@
 
 .mb-24 {
   margin-bottom: 24px;
+}
+
+.hand-cursor {
+  cursor: pointer;
+}
+
+.pd-20 {
+  padding: 20px;
 }

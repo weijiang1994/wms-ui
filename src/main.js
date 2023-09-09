@@ -16,7 +16,7 @@ import "highlight.js/styles/atom-one-light.css";
 import store from "./store";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "@/assets/css/base.css";
-
+import service from "@/util/request";
 NProgress.inc(0.2);
 NProgress.configure({ easing: "ease", speed: 500, showSpinner: false });
 
@@ -24,7 +24,7 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.component(CollapseTransition.name, CollapseTransition);
-
+Vue.prototype.$axios = service;
 Vue.directive("highlight", function (el) {
   let blocks = el.querySelectorAll("pre code");
   blocks.forEach((block) => {
