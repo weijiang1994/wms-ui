@@ -52,6 +52,16 @@ const systemRouter = [
       roles: ["admin"],
     },
   },
+  {
+    path: "role/manager",
+    name: "RoleManager",
+    component: () => import("@/views/system/Role.vue"),
+    meta: {
+      title: "角色管理",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
 ];
 const routes = [
   {

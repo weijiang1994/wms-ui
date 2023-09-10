@@ -66,7 +66,7 @@
                 ><i class="bi bi-key"></i>权限管理</el-menu-item
               >
               <el-menu-item
-                index="/post/edit"
+                index="/role/manager"
                 @click="goSecondPage('/role', '/manager')"
                 ><i class="bi bi-person-vcard"></i>角色管理</el-menu-item
               >

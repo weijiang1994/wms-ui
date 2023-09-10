@@ -10,11 +10,13 @@
         :isCollapse="leftMenu.collapse"
         :menuWidth="leftMenu.width"
       ></leftNav>
-
       <el-main>
-        <bread @collapse-left="collapseLeft" :iconName="breadIcon"></bread>
-        <!-- main部分 -->
-        <router-view />
+        <ViewTab></ViewTab>
+        <div class="pd-20">
+          <bread @collapse-left="collapseLeft" :iconName="breadIcon"></bread>
+          <!-- main部分 -->
+          <keep-alive><router-view /></keep-alive>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -26,12 +28,13 @@ import navtop from "@/components/NavTop.vue";
 import leftNav from "@/components/LeftMenu.vue";
 import Bread from "@/components/Bread.vue";
 import { getUserInfo } from "@/api/auth";
-
+import ViewTab from "../components/ViewTab.vue";
 export default {
   components: {
     navtop,
     leftNav,
     Bread,
+    ViewTab,
   },
   data() {
     return {
@@ -75,5 +78,12 @@ export default {
 
 .el-container {
   height: 100%;
+}
+.el-main {
+  margin: 0px !important;
+  padding: 0px;
+}
+.pd-20 {
+  padding: 20px;
 }
 </style>
