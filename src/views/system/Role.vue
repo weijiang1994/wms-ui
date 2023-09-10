@@ -11,70 +11,66 @@
         >
       </div>
     </div>
-    <el-table style="width: 100%" :data="permissions" class="mt-12">
-      <el-table-column prop="name" label="角色"></el-table-column>
+    <el-table style="width: 100%" :data="roles" class="mt-12">
+      <el-table-column prop="name" label="角色" width="200px"></el-table-column>
       <el-table-column prop="desc" label="描述"></el-table-column>
-      <el-table-column prop="roles" label="权限">
+      <el-table-column prop="permissions" label="权限">
         <template slot-scope="scope">
           <el-tag
             style="margin: 3px"
             class="hand-cursor"
-            :title="role.desc"
-            v-for="(role, idx) of scope.row.roles"
+            v-for="(perm, idx) of scope.row.perms"
             :key="idx"
             size="small"
-            >{{ role }}</el-tag
+            >{{ perm }}</el-tag
           >
         </template>
       </el-table-column>
-      <el-table-column prop="address" label="操作">
+      <el-table-column label="操作" width="100px">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="editPerm(scope.row.id)"
+          <el-button size="small" type="primary" @click="editRole(scope.row.id)"
             >编辑</el-button
           >
-          <el-button
+          <!-- <el-button
             size="small"
             type="danger"
             @click="deletePerm(scope.row.name)"
             >删除</el-button
-          >
+          > -->
         </template></el-table-column
       >
     </el-table>
-    <el-drawer title="新增权限" :visible.sync="drawer" direction="rtl">
+    <el-drawer title="新增角色" :visible.sync="drawer" direction="rtl">
       <div class="pd-20">
         <el-form
-          :model="newPermissonForm"
+          :model="newRoleForm"
           label-width="90px"
           label-position="left"
           :rules="rules"
-          ref="newPermissonForm"
+          ref="newRoleForm"
         >
-          <el-form-item label="权限名" prop="name">
+          <el-form-item label="角色名" prop="name">
             <el-input
-              v-model="newPermissonForm.name"
-              placeholder="请输入权限名"
+              v-model="newRoleForm.name"
+              placeholder="请输入角色名"
             ></el-input>
           </el-form-item>
           <el-form-item label="描述" prop="desc">
-            <el-input
-              v-model="newPermissonForm.desc"
-              type="textarea"
-            ></el-input>
+            <el-input v-model="newRoleForm.desc" type="textarea"></el-input>
           </el-form-item>
-          <el-form-item label="角色" prop="roles"
-            ><el-checkbox-group v-model="newPermissonForm.roles">
+          <el-form-item label="权限" prop="perms"
+            ><el-checkbox-group v-model="newRoleForm.perms">
               <el-checkbox
                 :key="idx"
-                :label="role.name"
-                v-for="(role, idx) of roles"
+                :label="perm"
+                v-for="(perm, idx) of permissions"
               ></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item
-            ><el-button size="small" @click="addNewPermission" type="success"
+            ><el-button size="small" @click="addNewRole" type="success"
               >添加</el-button
-            ><el-button size="small" @click="resetNewPermissionForm"
+            ><el-button size="small" @click="resetNewRoleForm"
               >重置</el-button
             ></el-form-item
           >
@@ -85,7 +81,7 @@
 </template>
   <script>
 export default {
-  name: "PermissionManagement",
+  name: "RoleManagement",
   data() {
     return {
       permissions: [],
@@ -93,14 +89,15 @@ export default {
       roles: [],
       isEdit: false,
       oldName: "",
-      newPermissonForm: {
+      newRoleForm: {
         desc: "",
         name: "",
-        roles: [],
+        rid: 0,
+        perms: [],
       },
       rules: {
         name: [
-          { required: true, message: "请输入权限名称", trigger: "blur" },
+          { required: true, message: "请输入角色名称", trigger: "blur" },
           {
             min: 3,
             max: 60,
@@ -109,7 +106,7 @@ export default {
           },
         ],
         desc: [
-          { required: true, message: "权限描述信息不能为空", trigger: "blur" },
+          { required: true, message: "角色描述信息不能为空", trigger: "blur" },
           {
             min: 2,
             max: 20,
@@ -117,20 +114,23 @@ export default {
             trigger: "blur",
           },
         ],
-        roles: [{ required: true, message: "请选择角色", trigger: "blur" }],
+        roles: [{ required: true, message: "请权限角色", trigger: "blur" }],
       },
     };
   },
   mounted() {
-    this.$axios.get("/user/role/list").then((res) => {
-      this.roles = res.data.roles;
-    });
     this.getPermissionList();
+    this.getRoleLists();
   },
   methods: {
+    getRoleLists() {
+      this.$axios.get("/user/role/lists").then((res) => {
+        this.roles = res.data;
+      });
+    },
     deletePerm(permName) {
       this.$confirm(
-        `删除后可能会影响用户的操作，确认删除权限 ${permName} 吗？`,
+        `删除后可能会影响用户的操作，确认删除角色 ${permName} 吗？`,
         "提示",
         {
           confirmButtonText: "确定",
@@ -156,34 +156,38 @@ export default {
           });
         });
     },
-    editPerm(pid) {
-      this.newPermissonForm = this.permissions.find((perm) => perm.id === pid);
-      this.oldName = this.newPermissonForm.name;
+    editRole(rid) {
+      this.newRoleForm = this.roles.find((role) => role.id === rid);
+      this.newRoleForm.rid = rid;
       this.drawer = true;
       this.isEdit = true;
     },
-    addNewPermission() {
-      this.$refs.newPermissonForm.validate((valid) => {
+    addNewRole() {
+      this.$refs.newRoleForm.validate((valid) => {
         if (valid) {
           if (this.isEdit) {
             this.$axios
-              .post("/user/permission/edit", {
-                ...this.newPermissonForm,
-                old_name: this.oldName,
+              .post("/user/role/edit", {
+                ...this.newRoleForm,
               })
               .then((res) => {
-                this.getPermissionList();
-              });
-          } else
-            this.$axios
-              .post("/user/permission/add", this.newPermissonForm)
-              .then((res) => {
                 this.$message({
-                  message: "添加成功",
+                  message: res.msg || "修改成功",
                   type: "success",
                 });
                 this.drawer = false;
-                this.getPermissionList();
+                this.getRoleLists();
+              });
+          } else
+            this.$axios
+              .post("/user/role/add", this.newRoleForm)
+              .then((res) => {
+                this.$message({
+                  message: res.msg || "添加成功",
+                  type: "success",
+                });
+                this.drawer = false;
+                this.getRoleLists();
               })
               .catch((err) => {
                 this.$message({
@@ -196,14 +200,11 @@ export default {
         }
       });
     },
-    resetNewPermissionForm() {
-      this.$refs.newPermissonForm.resetFields();
-    },
-    doSearch() {
-      console.log(this.search);
+    resetNewRoleForm() {
+      this.$refs.newRoleForm.resetFields();
     },
     getPermissionList() {
-      this.$axios.get("/user/permission/list").then((res) => {
+      this.$axios.get("/user/permission/list?type=brief").then((res) => {
         this.permissions = res.data;
       });
     },
