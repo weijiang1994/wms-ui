@@ -118,6 +118,7 @@ export default {
       this.$axios.post("/warehouse/add", this.form).then((res) => {
         this.$message.success("添加成功");
         this.drawer = false;
+        this.getWarehouseList();
       });
     },
     getWarehouseList() {
