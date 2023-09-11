@@ -63,6 +63,19 @@ const systemRouter = [
     },
   },
 ];
+
+const produceRouter = [
+  {
+    path: "Warehouse/manager",
+    name: "WarehouseManager",
+    component: () => import("@/views/produce/warehouse/Warehouse.vue"),
+    meta: {
+      title: "仓库管理",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
+];
 const routes = [
   {
     path: "/login",
@@ -79,6 +92,7 @@ const routes = [
     redirect: "index",
     children: [
       ...systemRouter,
+      ...produceRouter,
       {
         path: "index",
         name: "Centre",

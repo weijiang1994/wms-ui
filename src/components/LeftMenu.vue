@@ -34,8 +34,8 @@
               >
               <el-menu-item
                 v-if="user && user.permissions.includes('warehouse-admin')"
-                index="/post/review"
-                @click="goSecondPage('/post', '/review')"
+                index="/warehouse/manager"
+                @click="goSecondPage('/warehouse', '/manager')"
                 ><i class="bi bi-database"></i>仓库管理</el-menu-item
               >
               <el-menu-item
