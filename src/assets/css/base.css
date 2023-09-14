@@ -68,6 +68,33 @@
   margin-bottom: 24px;
 }
 
+.me-6 {
+  margin-right: 6px;
+}
+.me-12 {
+  margin-right: 12px;
+}
+.me-16 {
+  margin-right: 16px;
+}
+.me-20 {
+  margin-right: 20px;
+}
+.me-24 {
+  margin-right: 24px;
+}
+.ms-6 {
+  margin-left: 6px;
+}
+.ms-12 {
+  margin-left: 12px;
+}
+.ms-16 {
+  margin-left: 16px;
+}
+.ms-20 {
+  margin-left: 20px;
+}
 .hand-cursor {
   cursor: pointer;
 }

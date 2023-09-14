@@ -22,22 +22,51 @@
     </div>
     <div class="warhouse-container">
       <div class="warehouse-card" v-for="(wh, idx) of warehouses" :key="idx">
-        <p class="warehouse-name">{{ wh.name }}</p>
+        <div class="d-flex align-center">
+          <div>
+            <p class="warehouse-name">{{ wh.name }}</p>
+            <p>
+              <i class="bi bi-geo-alt"></i><span>{{ wh.address }}</span>
+            </p>
+          </div>
+          <el-tooltip :content="`仓库管理员${wh.manager.name}`">
+            <img
+              style="width: 15%; border-radius: 50%; margin-left: auto"
+              :src="wh.manager.avatar"
+              :alt="wh.manager.uname"
+          /></el-tooltip>
+        </div>
+
+        <div class="warehouse-volume">
+          <div
+            class="left"
+            :style="{
+              width: parseInt((wh.left / wh.volume).toFixed(2) * 100) + '%',
+            }"
+          >
+            <el-tooltip :content="`剩余容量${wh.left}`">
+              <div style="width: 100%; height: 100%"></div
+            ></el-tooltip>
+          </div>
+          <div
+            class="used"
+            :style="{
+              width:
+                parseInt(((wh.volume - wh.left) / wh.volume).toFixed(2) * 100) +
+                '%',
+            }"
+          >
+            <el-tooltip :content="`已用容量${wh.volume - wh.left}`">
+              <div style="width: 100%; height: 100%"></div
+            ></el-tooltip>
+          </div>
+        </div>
         <p>
-          位置：<span>{{ wh.address }}</span>
-        </p>
-        <p>
-          总容量：<span>{{ wh.volume }}</span>
-        </p>
-        <p>
-          剩余容量：<span>{{ wh.left }}</span>
-        </p>
-        <p>
-          创建时间：<span>{{ wh.create_time }}</span>
+          <i class="bi bi-clock"></i><span>{{ wh.create_time }}</span>
         </p>
         <el-tag
           size="small"
-          class="mt-12"
+          class="mt-12 me-6"
           v-for="(tag, idx) of wh.tags"
           :key="idx"
           >{{ tag }}</el-tag
@@ -160,5 +189,23 @@ export default {
 }
 .warehouse-card p:first-child {
   margin-top: 10px;
+}
+.warehouse-volume {
+  height: 20px;
+  display: flex;
+  margin-top: 12px;
+}
+.warehouse-volume .left {
+  background: #00bd45bf;
+  height: 100%;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.warehouse-volume .used {
+  background: rgb(55 55 55 / 78%);
+  height: 100%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 </style>
