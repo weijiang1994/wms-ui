@@ -61,9 +61,36 @@
             ></el-tooltip>
           </div>
         </div>
-        <p>
-          <i class="bi bi-clock"></i><span>{{ wh.create_time }}</span>
-        </p>
+        <div class="d-flex mt-12 align-center">
+          <p class="mt-0">
+            <i class="bi bi-clock"></i><span>{{ wh.create_time }}</span>
+          </p>
+          <div class="ms-auto">
+            <div
+              v-if="wh.status === 1"
+              class="d-flex align-center flex-row-reverse"
+            >
+              <p class="mt-0" style="color: #008558">正常</p>
+              <img
+                style="width: 20%"
+                src="@/assets/imgs/normal.png"
+                class="me-6"
+              />
+            </div>
+            <div
+              v-if="wh.status === 0"
+              class="d-flex align-center flex-row-reverse"
+            >
+              <p class="mt-0" style="color: #d11b1b">废弃</p>
+              <img
+                style="width: 20%"
+                src="@/assets/imgs/unuse.png"
+                class="me-6"
+              />
+            </div>
+          </div>
+        </div>
+
         <el-tag
           size="small"
           class="mt-12 me-6"
