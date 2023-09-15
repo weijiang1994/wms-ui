@@ -71,6 +71,11 @@
           :key="idx"
           >{{ tag }}</el-tag
         >
+        <div class="text-right mt-12">
+          <el-button size="mini" type="primary">物料入库</el-button>
+          <el-button size="mini" type="success">物料列表</el-button>
+          <el-button size="mini" type="warning">仓库编辑</el-button>
+        </div>
       </div>
     </div>
     <el-drawer title="添加仓库" :visible.sync="drawer" direction="rtl">
@@ -90,11 +95,20 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="仓库管理员">
-          <el-input
+          <el-select
             v-model="form.manager"
+            filterable
+            placeholder="请输入仓库管理员"
             size="small"
-            placeholder="请输入仓库名称"
-          ></el-input>
+            style="width: 100%"
+          >
+            <el-option
+              v-for="user in users"
+              :key="user.id"
+              :label="user.name"
+              :value="user.id"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="容量">
           <el-input
@@ -132,10 +146,11 @@ export default {
   data() {
     return {
       drawer: false,
+      users: [],
       form: {
         name: "",
         address: "",
-        manager: 1,
+        manager: "",
         volume: 2000,
         tags: [],
       },
@@ -158,6 +173,9 @@ export default {
   },
   mounted() {
     this.getWarehouseList();
+    this.$axios.get("/user/list").then((res) => {
+      this.users = res.data;
+    });
   },
 };
 </script>
