@@ -21,7 +21,16 @@
       </div>
     </div>
     <div class="warhouse-container">
-      <div class="warehouse-card" v-for="(wh, idx) of warehouses" :key="idx">
+      <div
+        class="warehouse-card"
+        v-for="(wh, idx) of warehouses"
+        :key="idx"
+        :style="
+          wh.status === 0
+            ? { backgroundColor: 'azure' }
+            : { backgroundColor: white }
+        "
+      >
         <div class="d-flex align-center">
           <div>
             <p class="warehouse-name">{{ wh.name }}</p>
@@ -99,8 +108,12 @@
           >{{ tag }}</el-tag
         >
         <div class="text-right mt-12">
-          <el-button size="mini" type="primary">物料入库</el-button>
-          <el-button size="mini" type="success">物料列表</el-button>
+          <el-button size="mini" type="primary" :disabled="wh.status === 0"
+            >物料入库</el-button
+          >
+          <el-button size="mini" type="success" :disabled="wh.status === 0"
+            >物料列表</el-button
+          >
           <el-button size="mini" type="warning">仓库编辑</el-button>
         </div>
       </div>
@@ -239,6 +252,7 @@ export default {
   height: 20px;
   display: flex;
   margin-top: 12px;
+  border-radius: 10px;
 }
 .warehouse-volume .left {
   background: #00bd45bf;
