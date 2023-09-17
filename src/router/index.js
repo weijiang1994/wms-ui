@@ -75,6 +75,16 @@ const produceRouter = [
       roles: ["admin"],
     },
   },
+  {
+    path: "material/stocking/:warehouseId?",
+    name: "MaterialStocking",
+    component: () => import("@/views/produce/material/Stocking.vue"),
+    meta: {
+      title: "物料入库",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
 ];
 const routes = [
   {
@@ -265,14 +275,18 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   if (to.meta.title) {
     document.title = to.meta.title;
-  } else document.title = "后台管理页面";
+  } else {
+    document.title = "后台管理页面";
+  }
   if (to.name !== "Login" && !token) {
     next({ name: "Login" });
     Message({
       message: "请先登录！",
       type: "warning",
     });
-  } else next();
+  } else {
+    next();
+  }
 });
 
 router.afterEach(() => {

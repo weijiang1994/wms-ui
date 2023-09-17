@@ -28,8 +28,8 @@
               >
               <el-menu-item
                 v-if="user && user.permissions.includes('in-admin')"
-                index="/post/review"
-                @click="goSecondPage('/post', '/review')"
+                index="/material/stocking"
+                @click="goSecondPage('/material', '/stocking')"
                 ><i class="bi bi-download"></i>物料入库</el-menu-item
               >
               <el-menu-item
