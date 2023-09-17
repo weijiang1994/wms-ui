@@ -10,15 +10,20 @@
     >
       物料入库
     </p>
-    <el-form label-width="100px" label-position="left">
-      <el-form-item label="物料名称">
-        <el-input placeholder="请输入物料名称"></el-input>
+    <el-form label-width="100px" label-position="left" :rules="rules">
+      <el-form-item label="物料名称" prop="name">
+        <el-input placeholder="请输入物料名称" v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="物料类型">
-        <el-input placeholder="请输入物料类型"></el-input>
+      <el-form-item label="物料类型" prop="type">
+        <el-input placeholder="请输入物料类型" v-model="form.type"></el-input>
       </el-form-item>
-      <el-form-item label="物料单位">
-        <el-select placeholder="请选择" style="width: 100%" :filterable="true">
+      <el-form-item label="物料单位" prop="unit">
+        <el-select
+          placeholder="请选择"
+          style="width: 100%"
+          :filterable="true"
+          v-model="form.unit"
+        >
           <el-option label="千克" value="kg"></el-option>
           <el-option label="克" value="g"></el-option>
           <el-option label="吨" value="t"></el-option>
@@ -51,7 +56,7 @@
           <el-option label="本" value="ben"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="目标仓库">
+      <el-form-item label="目标仓库" prop="warehouseId">
         <el-select
           v-model="form.warehouseId"
           placeholder="请选择"
@@ -66,14 +71,14 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="物料数量">
-        <el-input placeholder="请输入物料数量"></el-input>
+      <el-form-item label="物料数量" prop="amount">
+        <el-input placeholder="请输入物料数量" v-model="form.amount"></el-input>
       </el-form-item>
-      <el-form-item label="物料单价">
-        <el-input placeholder="请输入物料单价"></el-input>
+      <el-form-item label="物料单价" prop="price">
+        <el-input placeholder="请输入物料单价" v-model="form.price"></el-input>
       </el-form-item>
-      <el-form-item label="物料编码">
-        <el-input placeholder="请输入物料编码"></el-input>
+      <el-form-item label="物料编码" prop="code">
+        <el-input placeholder="请输入物料编码" v-model="form.code"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">入库</el-button>
@@ -89,6 +94,25 @@ export default {
       warehouses: [],
       form: {
         warehouseId: "",
+        name: "",
+        unit: "",
+        type: "",
+        amount: "",
+        price: "",
+        code: "",
+      },
+      rules: {
+        warehouseId: [
+          { required: true, message: "请选择目标仓库", trigger: "blur" },
+        ],
+        name: [{ required: true, message: "请输入物料名称", trigger: "blur" }],
+        unit: [{ required: true, message: "请选择物料单位", trigger: "blur" }],
+        type: [{ required: true, message: "请输入物料类型", trigger: "blur" }],
+        amount: [
+          { required: true, message: "请输入物料数量", trigger: "blur" },
+        ],
+        price: [{ required: true, message: "请输入物料单价", trigger: "blur" }],
+        code: [{ required: true, message: "请输入物料编码", trigger: "blur" }],
       },
     };
   },
