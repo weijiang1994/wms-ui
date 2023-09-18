@@ -85,6 +85,16 @@ const produceRouter = [
       roles: ["admin"],
     },
   },
+  {
+    path: "material/spec",
+    name: "MaterialSpec",
+    component: () => import("@/views/produce/material/Spec.vue"),
+    meta: {
+      title: "规格管理",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
 ];
 const routes = [
   {

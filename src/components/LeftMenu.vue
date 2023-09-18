@@ -26,23 +26,29 @@
                 @click="$router.push('/material/out')"
                 ><i class="bi bi-upload"></i>物料出库</el-menu-item
               >
-              <el-menu-item
-                v-if="user && user.permissions.includes('in-admin')"
-                index="/material/stocking"
-                @click="goSecondPage('/material', '/stocking')"
-                ><i class="bi bi-download"></i>物料入库</el-menu-item
-              >
+              <el-submenu index="1-4">
+                <template slot="title"
+                  ><i class="bi bi-pin-angle"></i>物料管理</template
+                >
+
+                <el-menu-item
+                  v-if="user && user.permissions.includes('in-admin')"
+                  index="/material/stocking"
+                  @click="goSecondPage('/material', '/stocking')"
+                  ><i class="bi bi-download"></i>物料入库</el-menu-item
+                >
+                <el-menu-item
+                  v-if="user && user.permissions.includes('in-admin')"
+                  index="/material/spec"
+                  @click="goSecondPage('/material', '/spec')"
+                  ><i class="bi bi-aspect-ratio"></i>规格管理</el-menu-item
+                >
+              </el-submenu>
               <el-menu-item
                 v-if="user && user.permissions.includes('warehouse-admin')"
                 index="/warehouse/manager"
                 @click="goSecondPage('/warehouse', '/manager')"
                 ><i class="bi bi-database"></i>仓库管理</el-menu-item
-              >
-              <el-menu-item
-                v-if="user && user.permissions.includes('material-admin')"
-                index="/post/edit"
-                @click="goSecondPage('/post', '/edit')"
-                ><i class="bi bi-pin-angle"></i>物料管理</el-menu-item
               >
             </el-menu-item-group>
           </el-submenu>
