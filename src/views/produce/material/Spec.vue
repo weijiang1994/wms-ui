@@ -19,15 +19,15 @@
       <template #title>
         <span>新增规格</span>
       </template>
-      <el-form style="padding: 24px">
-        <el-form-item label="材料名称">
+      <el-form style="padding: 24px" :rules="rules">
+        <el-form-item label="材料名称" prop="name">
           <el-input
             v-model="name"
             placeholder="请输入内容"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="材料规格及其型号">
+        <el-form-item label="材料规格及其型号" prop="specification">
           <el-input
             v-model="specification"
             placeholder="请输入内容"
@@ -36,7 +36,47 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="示例图">
-          <div></div>
+          <br />
+          <input
+            type="file"
+            ref="exampleImage"
+            style="display: none"
+            @change="uploadImg"
+          />
+          <div class="d-flex" style="flex-wrap: wrap">
+            <div
+              class="uploaded-img"
+              v-for="(img, idx) of images"
+              :key="idx"
+              @mouseover="currentIndex = idx"
+              @mouseleave="currentIndex = -1"
+            >
+              <div
+                class="img-mask"
+                :class="currentIndex === idx ? 'active' : ''"
+              >
+                <p @click="deleteUploadedImg(idx)">
+                  <i class="bi bi-trash"></i>
+                </p>
+              </div>
+              <img class="uploaded-img" :src="img" alt="idx" />
+            </div>
+            <div class="img-upload-div" @click="addImage">
+              <p>
+                <i
+                  style="
+                    font-size: 50px;
+                    color: rgb(167, 167, 167);
+                    margin-right: 0px;
+                  "
+                  class="bi bi-plus"
+                ></i>
+              </p>
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="small">添加</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -47,13 +87,38 @@ export default {
   name: "MaterialSpec",
   data() {
     return {
-      show: false,
+      currentIndex: -1, // 当前选中图片的索引
+      show: true,
       name: "",
       specification: "",
       example: "",
+      images: [
+        "https://bbs.2dogz.cn/normal/image/avatars/14a0c76d1717406fa19495e2868cd7a1_l.png",
+        "https://bbs.2dogz.cn/normal/image/avatars/52ef8f39889841849d2161b8a41f8ddc_l.png",
+        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
+        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
+        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
+        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
+      ],
+      rules: {
+        name: [{ required: true, message: "请输入规格名称", trigger: "blur" }],
+        specification: [
+          { required: true, message: "请输入规格", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
+    addImage() {
+      this.$refs.exampleImage.click();
+    },
+    uploadImg() {
+      const file = this.$refs.exampleImage.files[0];
+      console.log(file);
+    },
+    deleteUploadedImg(idx) {
+      this.images.splice(idx, 1);
+    },
     // 新增规格
     addSpec() {
       // 发送请求
@@ -70,3 +135,41 @@ export default {
   // 计算属性
 };
 </script>
+<style scoped>
+.img-upload-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  cursor: pointer;
+  background: rgb(228, 228, 228);
+}
+.img-upload-div:hover {
+  background: rgb(201, 201, 201);
+}
+.uploaded-img {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.img-mask {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #10101054;
+  z-index: 1;
+  text-align: center;
+  display: none;
+}
+.img-mask p {
+  margin-top: 30px;
+  color: white;
+}
+.img-mask.active {
+  display: block;
+}
+</style>
