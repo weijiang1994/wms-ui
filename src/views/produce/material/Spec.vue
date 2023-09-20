@@ -96,14 +96,7 @@ export default {
       specification: "",
       example: "",
       uuid: "",
-      images: [
-        "https://bbs.2dogz.cn/normal/image/avatars/14a0c76d1717406fa19495e2868cd7a1_l.png",
-        "https://bbs.2dogz.cn/normal/image/avatars/52ef8f39889841849d2161b8a41f8ddc_l.png",
-        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
-        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
-        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
-        "https://bbs.2dogz.cn/normal/image/comments/629b8f601758c820bec65c4406623642/",
-      ],
+      images: [],
       rules: {
         name: [{ required: true, message: "请输入规格名称", trigger: "blur" }],
         specification: [
