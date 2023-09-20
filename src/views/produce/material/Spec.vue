@@ -19,7 +19,7 @@
       <template #title>
         <span>新增规格</span>
       </template>
-      <el-form style="padding: 24px" :rules="rules">
+      <el-form style="padding: 24px" :rules="rules" ref="form">
         <el-form-item label="材料名称" prop="name">
           <el-input
             v-model="name"
@@ -76,13 +76,16 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small">添加</el-button>
+          <el-button type="primary" size="small" @click="addSpec"
+            >添加</el-button
+          >
         </el-form-item>
       </el-form>
     </el-drawer>
   </div>
 </template>
 <script>
+import { guid } from "@/util/constants";
 export default {
   name: "MaterialSpec",
   data() {
@@ -92,6 +95,7 @@ export default {
       name: "",
       specification: "",
       example: "",
+      uuid: "",
       images: [
         "https://bbs.2dogz.cn/normal/image/avatars/14a0c76d1717406fa19495e2868cd7a1_l.png",
         "https://bbs.2dogz.cn/normal/image/avatars/52ef8f39889841849d2161b8a41f8ddc_l.png",
@@ -114,22 +118,43 @@ export default {
     },
     uploadImg() {
       const file = this.$refs.exampleImage.files[0];
-      console.log(file);
+      const form = new FormData();
+      form.append("file", file);
+      form.append("uuid", this.uuid);
+      this.$axios
+        .post("/tools/upload-img", form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          this.images.push(res.url);
+        });
     },
     deleteUploadedImg(idx) {
       this.images.splice(idx, 1);
     },
     // 新增规格
     addSpec() {
-      // 发送请求
-      // 提示
-      this.$message({
-        message: "新增成功",
-        type: "success",
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.specs.push(this.form);
+          this.form = {
+            name: "",
+            specification: "",
+            example: "",
+            images: [
+              "https://bbs.2dogz.cn/normal/image/avatars/14a0c76d1717406fa19495e2868cd7a1_l.png",
+            ],
+          };
+          this.dialogVisible = false;
+        }
       });
     },
   },
-  mounted() {},
+  mounted() {
+    this.uuid = guid();
+  },
   // 监听
   watch: {},
   // 计算属性
