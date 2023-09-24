@@ -28,7 +28,7 @@
         :style="
           wh.status === 0
             ? { backgroundColor: 'azure' }
-            : { backgroundColor: white }
+            : { backgroundColor: 'white' }
         "
       >
         <div class="d-flex align-center">
