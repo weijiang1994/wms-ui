@@ -9,27 +9,44 @@
         >新增规格</el-button
       >
     </div>
-    <el-table class="mt-12">
-      <el-table-column prop="date" label="材料名称" width="300px">
+    <el-table class="mt-12" :data="specs">
+      <el-table-column prop="name" label="材料名称" width="300px">
       </el-table-column>
-      <el-table-column prop="name" label="材料规格及其型号"> </el-table-column>
-      <el-table-column prop="address" label="示例图"> </el-table-column>
+      <el-table-column prop="description" label="材料规格及其型号">
+      </el-table-column>
+      <el-table-column prop="images" label="示例图">
+        <template #default="{ row }">
+          <div class="d-flex">
+            <viewer
+              ><img
+                class="uploaded-img"
+                v-for="(img, idx) of row.images"
+                :key="idx"
+                :src="img"
+                alt="idx"
+            /></viewer>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="create_time" label="创建时间"> </el-table-column>
+      <el-table-column prop="update_time" label="更新时间"> </el-table-column>
+      <el-table-column prop="user" label="创建人"> </el-table-column>
     </el-table>
     <el-drawer :visible.sync="show">
       <template #title>
         <span>新增规格</span>
       </template>
-      <el-form style="padding: 24px" :rules="rules" ref="form">
+      <el-form style="padding: 24px" :rules="rules" ref="form" :model="form">
         <el-form-item label="材料名称" prop="name">
           <el-input
-            v-model="name"
+            v-model="form.name"
             placeholder="请输入内容"
             size="small"
           ></el-input>
         </el-form-item>
         <el-form-item label="材料规格及其型号" prop="specification">
           <el-input
-            v-model="specification"
+            v-model="form.specification"
             placeholder="请输入内容"
             size="small"
             type="textarea"
@@ -91,21 +108,32 @@ export default {
   data() {
     return {
       currentIndex: -1, // 当前选中图片的索引
-      show: true,
-      name: "",
-      specification: "",
+      show: false,
+      form: { name: "", specification: "" },
       example: "",
       uuid: "",
       images: [],
+      specs: [],
       rules: {
         name: [{ required: true, message: "请输入规格名称", trigger: "blur" }],
         specification: [
           { required: true, message: "请输入规格", trigger: "blur" },
         ],
       },
+      paginate: {
+        page: 1,
+        size: 20,
+      },
     };
   },
   methods: {
+    getSpecList() {
+      this.$axios
+        .get("/material/list/spec", { ...this.paginate })
+        .then((res) => {
+          this.specs = res.data;
+        });
+    },
     addImage() {
       this.$refs.exampleImage.click();
     },
@@ -125,28 +153,38 @@ export default {
         });
     },
     deleteUploadedImg(idx) {
-      this.images.splice(idx, 1);
+      this.$axios
+        .post("/tools/remove-img", { uuid: this.uuid, path: this.images[idx] })
+        .then((res) => {
+          this.images.splice(idx, 1);
+        });
     },
     // 新增规格
     addSpec() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.specs.push(this.form);
-          this.form = {
-            name: "",
-            specification: "",
-            example: "",
-            images: [
-              "https://bbs.2dogz.cn/normal/image/avatars/14a0c76d1717406fa19495e2868cd7a1_l.png",
-            ],
-          };
-          this.dialogVisible = false;
+          this.$axios
+            .post("/material/add/spec", {
+              name: this.form.name,
+              specification: this.form.specification,
+              uuid: this.uuid,
+            })
+            .then((res) => {
+              this.$notify({
+                title: "成功",
+                message: "新增规格成功",
+                type: "success",
+              });
+              this.getSpecList();
+              this.show = false;
+            });
         }
       });
     },
   },
   mounted() {
     this.uuid = guid();
+    this.getSpecList();
   },
   // 监听
   watch: {},

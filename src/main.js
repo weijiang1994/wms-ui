@@ -17,12 +17,16 @@ import store from "./store";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "@/assets/css/base.css";
 import service from "@/util/request";
+import Viewer from "v-viewer";
+import "viewerjs/dist/viewer.css";
+
 NProgress.inc(0.2);
 NProgress.configure({ easing: "ease", speed: 500, showSpinner: false });
-
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
+Vue.use(Viewer);
+
 Vue.component(CollapseTransition.name, CollapseTransition);
 Vue.prototype.$axios = service;
 Vue.directive("highlight", function (el) {
