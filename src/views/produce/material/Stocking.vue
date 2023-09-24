@@ -10,7 +10,13 @@
     >
       物料入库
     </p>
-    <el-form label-width="100px" label-position="left" :rules="rules">
+    <el-form
+      label-width="100px"
+      label-position="left"
+      :rules="rules"
+      :model="form"
+      ref="form"
+    >
       <el-form-item label="物料名称" prop="name">
         <el-input placeholder="请输入物料名称" v-model="form.name"></el-input>
       </el-form-item>
@@ -80,8 +86,23 @@
       <el-form-item label="物料编码" prop="code">
         <el-input placeholder="请输入物料编码" v-model="form.code"></el-input>
       </el-form-item>
+      <el-form-item label="物料规格" prop="spec">
+        <el-select
+          placeholder="请选择"
+          style="width: 100%"
+          :filterable="true"
+          v-model="form.spec"
+        >
+          <el-option
+            v-for="(spec, idx) of specs"
+            :key="idx"
+            :label="spec.name"
+            :value="spec.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
-        <el-button type="primary">入库</el-button>
+        <el-button type="primary" @click="addMaterial">入库</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -92,6 +113,7 @@ export default {
   data() {
     return {
       warehouses: [],
+      specs: [],
       form: {
         warehouseId: "",
         name: "",
@@ -100,6 +122,7 @@ export default {
         amount: "",
         price: "",
         code: "",
+        spec: "",
       },
       rules: {
         warehouseId: [
@@ -113,12 +136,32 @@ export default {
         ],
         price: [{ required: true, message: "请输入物料单价", trigger: "blur" }],
         code: [{ required: true, message: "请输入物料编码", trigger: "blur" }],
+        spec: [{ required: true, message: "请选择物料规格", trigger: "blur" }],
       },
     };
+  },
+  methods: {
+    addMaterial() {
+      this.$refs.form.validate((valid) => {
+        if (!valid) return;
+        this.$axios.post("/material/stocking", { ...this.form }).then((res) => {
+          this.$notify({
+            title: "成功",
+            message: `物料${this.form.name}添加添加成功`,
+            type: "success",
+            duration: 2000,
+          });
+          // this.$router.push("/produce/material/outbound");
+        });
+      });
+    },
   },
   mounted() {
     this.$axios.get("/warehouse/list").then((res) => {
       this.warehouses = res.data;
+    });
+    this.$axios.get("/material/list/spec").then((res) => {
+      this.specs = res.data;
     });
   },
 };
