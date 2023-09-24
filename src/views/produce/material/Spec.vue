@@ -13,6 +13,9 @@
       <el-table-column prop="name" label="材料名称" width="300px">
       </el-table-column>
       <el-table-column prop="description" label="材料规格及其型号">
+        <template #default="{ row }">
+          <pre style="font-family: MicroSoft YaHei">{{ row.description }}</pre>
+        </template>
       </el-table-column>
       <el-table-column prop="images" label="示例图">
         <template #default="{ row }">
@@ -177,6 +180,9 @@ export default {
               });
               this.getSpecList();
               this.show = false;
+              this.form = { name: "", specification: "" };
+              this.uuid = guid();
+              this.images = [];
             });
         }
       });
