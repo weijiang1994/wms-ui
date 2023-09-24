@@ -177,6 +177,9 @@ export default {
               });
               this.getSpecList();
               this.show = false;
+              this.form = { name: "", specification: "" };
+              this.uuid = guid();
+              this.images = []
             });
         }
       });
