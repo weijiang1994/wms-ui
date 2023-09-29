@@ -116,6 +116,11 @@
                 >编辑</el-dropdown-item
               >
               <el-dropdown-item
+                @click.native="editMaterial(row.id)"
+                v-if="user && user.permissions.includes('material-admin')"
+                >添加库存</el-dropdown-item
+              >
+              <el-dropdown-item
                 @click.native="$router.push(`/material/out/${row.id}`)"
                 v-if="user && user.permissions.includes('material-out')"
                 >出库</el-dropdown-item
@@ -133,7 +138,7 @@
   </div>
 </template>
 <script>
-import Pagination from "../../../components/Pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 export default {
   components: { Pagination },
   name: "MaterialList",
