@@ -86,6 +86,16 @@ const produceRouter = [
     },
   },
   {
+    path: "material/list/:warehouseId?",
+    name: "List",
+    component: () => import("@/views/produce/material/List.vue"),
+    meta: {
+      title: "物料列表",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
+  {
     path: "material/spec",
     name: "MaterialSpec",
     component: () => import("@/views/produce/material/Spec.vue"),

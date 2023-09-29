@@ -22,9 +22,9 @@
             </template>
             <el-menu-item-group>
               <el-menu-item
-                index="/material/out"
-                @click="$router.push('/material/out')"
-                ><i class="bi bi-upload"></i>物料出库</el-menu-item
+                index="/material/list"
+                @click="$router.push('/material/list')"
+                ><i class="bi bi-card-list"></i>物料列表</el-menu-item
               >
               <el-submenu index="1-4">
                 <template slot="title"

@@ -19,7 +19,9 @@ import "@/assets/css/base.css";
 import service from "@/util/request";
 import Viewer from "v-viewer";
 import "viewerjs/dist/viewer.css";
+import Pagination from "@/components/Pagination.vue";
 
+Vue.component("Pagination", Pagination);
 NProgress.inc(0.2);
 NProgress.configure({ easing: "ease", speed: 500, showSpinner: false });
 Vue.config.productionTip = false;

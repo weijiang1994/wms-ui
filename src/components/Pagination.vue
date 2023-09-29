@@ -21,11 +21,11 @@ export default {
   methods: {
     // 每页条数改变
     handleSizeChange(size) {
-      this.$emit('size-change', size)
+      this.$emit("size-change", size);
     },
     // 当前页改变
     handleCurrentChange(page) {
-      this.$emit('page-change', page)
+      this.$emit("page-change", page);
     },
   },
   data() {
@@ -37,15 +37,18 @@ export default {
     };
   },
   // 获取父组件传递过来的total
-  props:{
-    total: Number,
-    disable:{type: Boolean, default: false}
-  }
+  props: {
+    total: {
+      type: Number,
+      default: 0,
+    },
+    disable: { type: Boolean, default: false },
+  },
 };
 </script>
 
 <style>
-  .mt{
-    margin-top: 8px;
-  }
+.mt {
+  margin-top: 8px;
+}
 </style>
