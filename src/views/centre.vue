@@ -161,20 +161,26 @@ export default {
       },
     };
   },
-  created() {},
-  async mounted() {
-    
-    for (let i = 0; i < quickEntry.length; i++) {
-      if (
-        this.$store.state.user &&
-        this.$store.state.user.permissions.includes(quickEntry[i].permission)
-      ) {
-        this.quickDatas.push(quickEntry[i]);
-      }
-    }
-  },
-  destroyed() {
-    window.clearInterval(this.timer);
+  watch: {
+    "$store.state.user": {
+      handler: function (val) {
+        if (val) {
+          this.userInfo = val;
+          this.quickDatas = [];
+          for (let i = 0; i < quickEntry.length; i++) {
+            if (
+              this.$store.state.user &&
+              this.$store.state.user.permissions.includes(
+                quickEntry[i].permission
+              )
+            ) {
+              this.quickDatas.push(quickEntry[i]);
+            }
+          }
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
     getVisitStatistic() {
