@@ -116,7 +116,7 @@
                 >编辑</el-dropdown-item
               >
               <el-dropdown-item
-                @click.native="outMaterial(row.id)"
+                @click.native="$router.push(`/material/out/${row.id}`)"
                 v-if="user && user.permissions.includes('material-out')"
                 >出库</el-dropdown-item
               >
@@ -164,7 +164,7 @@ export default {
       this.paginate.page = page;
       this.getMaterialList();
     },
-    sizeChange(size) {
+    changeSize(size) {
       this.paginate.size = size;
       this.getMaterialList();
     },

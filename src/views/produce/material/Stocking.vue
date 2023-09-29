@@ -30,36 +30,33 @@
           :filterable="true"
           v-model="form.unit"
         >
-          <el-option label="千克" value="kg"></el-option>
-          <el-option label="克" value="g"></el-option>
-          <el-option label="吨" value="t"></el-option>
-          <el-option label="斤" value="jin"></el-option>
-          <el-option label="个" value="ge"></el-option>
-          <el-option label="件" value="jian"></el-option>
-          <el-option label="台" value="tai"></el-option>
-          <el-option label="套" value="tao"></el-option>
-          <el-option label="箱" value="xiang"></el-option>
-          <el-option label="瓶" value="ping"></el-option>
-          <el-option label="桶" value="tong"></el-option>
-          <el-option label="包" value="bao"></el-option>
-          <el-option label="盒" value="he"></el-option>
-          <el-option label="罐" value="guan"></el-option>
-          <el-option label="卷" value="juan"></el-option>
-          <el-option label="片" value="pian"></el-option>
-          <el-option label="条" value="tiao"></el-option>
-          <el-option label="支" value="zhi"></el-option>
-          <el-option label="根" value="gen"></el-option>
-          <el-option label="块" value="kuai"></el-option>
-          <el-option label="张" value="zhang"></el-option>
-          <el-option label="双" value="shuang"></el-option>
-          <el-option label="对" value="dui"></el-option>
-          <el-option label="组" value="zu"></el-option>
-          <el-option label="件" value="jian"></el-option>
-          <el-option label="副" value="fu"></el-option>
-          <el-option label="套" value="tao"></el-option>
-          <el-option label="台" value="tai"></el-option>
-          <el-option label="辆" value="liang"></el-option>
-          <el-option label="本" value="ben"></el-option>
+          <el-option label="千克" value="千克"></el-option>
+          <el-option label="克" value="克"></el-option>
+          <el-option label="吨" value="吨"></el-option>
+          <el-option label="斤" value="斤"></el-option>
+          <el-option label="个" value="个"></el-option>
+          <el-option label="件" value="件"></el-option>
+          <el-option label="台" value="台"></el-option>
+          <el-option label="套" value="套"></el-option>
+          <el-option label="箱" value="箱"></el-option>
+          <el-option label="瓶" value="瓶"></el-option>
+          <el-option label="桶" value="桶"></el-option>
+          <el-option label="包" value="包"></el-option>
+          <el-option label="盒" value="盒"></el-option>
+          <el-option label="罐" value="罐"></el-option>
+          <el-option label="卷" value="卷"></el-option>
+          <el-option label="片" value="片"></el-option>
+          <el-option label="条" value="条"></el-option>
+          <el-option label="支" value="支"></el-option>
+          <el-option label="根" value="根"></el-option>
+          <el-option label="块" value="块"></el-option>
+          <el-option label="张" value="张"></el-option>
+          <el-option label="双" value="双"></el-option>
+          <el-option label="对" value="对"></el-option>
+          <el-option label="组" value="组"></el-option>
+          <el-option label="副" value="副"></el-option>
+          <el-option label="辆" value="辆"></el-option>
+          <el-option label="本" value="本"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="目标仓库" prop="warehouseId">

@@ -96,6 +96,16 @@ const produceRouter = [
     },
   },
   {
+    path: "material/out/:materialId?",
+    name: "MaterialOut",
+    component: () => import("@/views/produce/material/Out.vue"),
+    meta: {
+      title: "物料出库",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
+  {
     path: "material/spec",
     name: "MaterialSpec",
     component: () => import("@/views/produce/material/Spec.vue"),
