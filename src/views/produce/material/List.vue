@@ -116,7 +116,7 @@
                 >编辑</el-dropdown-item
               >
               <el-dropdown-item
-                @click.native="editMaterial(row.id)"
+                @click.native="addStorage(row.id)"
                 v-if="user && user.permissions.includes('material-admin')"
                 >添加库存</el-dropdown-item
               >
@@ -135,6 +135,48 @@
       @page-change="changePage"
       @size-change="changeSize"
     ></pagination>
+    <el-drawer
+      title="添加库存"
+      :visible.sync="drawer"
+      direction="rtl"
+      :before-close="beforeClose"
+    >
+      <el-form ref="form" :model="storage" label-width="80px">
+        <el-form-item label="物料名称">
+          <el-input v-model="storage.name" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="物料规格">
+          <el-input v-model="storage.spec" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="物料编码">
+          <el-input v-model="storage.barcode" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="仓库">
+          <el-input v-model="storage.warehouse" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="剩余数量">
+          <el-input v-model="storage.left" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="添加数量">
+          <el-input-number
+            v-model="storage.num"
+            :min="1"
+            :precision="0"
+            controls-position="right"
+          ></el-input-number>
+        </el-form-item>
+        <el-form-item label="备注信息">
+          <el-input
+            type="textarea"
+            v-model="storage.reason"
+            placeholder="请输入添加库存备注信息"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleAddStorage">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -144,7 +186,18 @@ export default {
   name: "MaterialList",
   data() {
     return {
+      drawer: false,
       materialList: [],
+      storage: {
+        name: "",
+        mid: "",
+        spec: "",
+        barcode: "",
+        warehouse: "",
+        num: 0,
+        reason: "",
+        left: 0,
+      },
       paginate: {
         page: 1,
         size: 20,
@@ -165,6 +218,29 @@ export default {
     },
   },
   methods: {
+    addStorage(materialId) {
+      this.drawer = true;
+      const material = this.materialList.find((item) => item.id === materialId);
+      this.storage = {
+        mid: material.id,
+        name: material.name,
+        spec: material.spec,
+        barcode: material.barcode,
+        warehouse: material.warehouse,
+        num: 0,
+        reason: "",
+        left: material.left,
+      };
+    },
+    handleAddStorage() {
+      this.$axios
+        .post("/material/add/storage", { ...this.storage })
+        .then((res) => {
+          this.$message.success(res.msg || "添加库存成功！");
+          this.getMaterialList();
+          this.drawer = false;
+        });
+    },
     changePage(page) {
       this.paginate.page = page;
       this.getMaterialList();
