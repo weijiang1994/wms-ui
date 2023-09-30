@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="outList" style="width: 100%">
+    <el-table :data="outList" style="width: 100%" height="650px">
       <el-table-column prop="name" label="物料名称"></el-table-column>
       <el-table-column prop="warehouse" label="仓库"></el-table-column>
       <el-table-column prop="num" label="出库数量"></el-table-column>
