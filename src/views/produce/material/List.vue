@@ -121,7 +121,7 @@
                 >添加库存</el-dropdown-item
               >
               <el-dropdown-item
-                @click.native="$router.push(`/material/out/${row.id}`)"
+                @click.native="outMaterial(row.id)"
                 v-if="user && user.permissions.includes('material-out')"
                 >出库</el-dropdown-item
               >
@@ -186,7 +186,10 @@ export default {
       console.log(this.user);
     },
     outMaterial(materialId) {
-      console.log({ materialId });
+      if (this.materialList.find((item) => item.id === materialId).left <= 0) {
+        return this.$message.error("库存不足，请联系物料管理员添加库存！");
+      }
+      this.$router.push(`/material/out/${materialId}`);
     },
   },
   mounted() {
