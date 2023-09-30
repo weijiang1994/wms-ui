@@ -116,6 +116,18 @@ const produceRouter = [
     },
   },
 ];
+const ownerRouter = [
+  {
+    path: "owner/out",
+    name: "OwnerOut",
+    component: () => import("@/views/owner/Out.vue"),
+    meta: {
+      title: "我的出库记录",
+      icon: "el-icon-user-solid",
+      roles: ["admin"],
+    },
+  },
+];
 const routes = [
   {
     path: "/login",
@@ -133,6 +145,7 @@ const routes = [
     children: [
       ...systemRouter,
       ...produceRouter,
+      ...ownerRouter,
       {
         path: "index",
         name: "Centre",
