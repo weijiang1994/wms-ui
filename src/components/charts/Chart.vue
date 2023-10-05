@@ -1,6 +1,6 @@
 // Echart.vue
 <template>
-  <div :id="elId" style="width: 100%; height: 330px" />
+  <div :id="elId" style="width: 100%; height: 270px" />
 </template>
 
 <script>

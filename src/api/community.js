@@ -18,7 +18,7 @@ function readReport(params) {
 
 function visitStatistic(params) {
   return request({
-    url: "/statistics/index",
+    url: "/statistics",
     params: params,
     method: "get",
   });

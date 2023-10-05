@@ -85,18 +85,84 @@
       <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header">
-            <i class="fa fa-file-o mr-3" style="color: #71cc59"></i>操作记录
+            <i
+              class="fa fa-arrow-circle-right fa-fw mr-3"
+              style="color: #71cc59"
+            ></i
+            >系统日志
           </div>
           <div>
-            <el-timeline>
-              <el-timeline-item
-                v-for="(log, index) in adminLogs"
-                :key="index"
-                :timestamp="log.timestamp"
-                color="#0bbd87"
+            <el-button-group>
+              <el-button
+                :type="currentLog === 1 ? 'primary' : 'default'"
+                size="small"
+                @click="currentLog = 1"
+                >入库记录</el-button
               >
-                {{ log.content }}
+              <el-button
+                :type="currentLog === 2 ? 'primary' : 'default'"
+                size="small"
+                @click="currentLog = 2"
+                >出库记录</el-button
+              >
+              <el-button
+                :type="currentLog === 3 ? 'primary' : 'default'"
+                size="small"
+                @click="currentLog = 3"
+                >操作记录</el-button
+              >
+            </el-button-group>
+            <el-timeline class="mt-12" v-show="currentLog === 1">
+              <el-timeline-item
+                :timestamp="inRecord.date"
+                placement="top"
+                v-for="(inRecord, idx) of inRecords"
+                :key="idx"
+              >
+                <el-card>
+                  <h4>物料入库</h4>
+                  <p>物料名称：{{ inRecord.name }}</p>
+                  <p>物料编码：{{ inRecord.barcode }}</p>
+                  <p>入库数量：{{ inRecord.num }}</p>
+                  <p>{{ inRecord.user }} 提交于 {{ inRecord.create_time }}</p>
+                </el-card>
               </el-timeline-item>
+              <el-button size="mini" class="mt-12">更多记录</el-button>
+            </el-timeline>
+            <el-timeline class="mt-12" v-show="currentLog === 2">
+              <el-timeline-item
+                :timestamp="outRecord.date"
+                placement="top"
+                v-for="(outRecord, idx) of outRecords"
+                :key="idx"
+              >
+                <el-card>
+                  <h4>物料出库</h4>
+                  <p>物料名称：{{ outRecord.name }}</p>
+                  <p>物料编码：{{ outRecord.barcode }}</p>
+                  <p>出库数量：{{ outRecord.num }}</p>
+                  <p>{{ outRecord.user }} 提交于 {{ outRecord.create_time }}</p>
+                </el-card>
+              </el-timeline-item>
+              <el-button size="mini" class="mt-12">更多记录</el-button>
+            </el-timeline>
+            <el-timeline class="mt-12" v-show="currentLog === 3">
+              <el-timeline-item
+                :timestamp="operateRecord.date"
+                placement="top"
+                v-for="(operateRecord, idx) of operateRecords"
+                :key="idx"
+              >
+                <el-card>
+                  <h4>{{ operateRecord.category }}</h4>
+                  <div v-html="operateRecord.desc"></div>
+                  <p>
+                    {{ operateRecord.user }} 提交于
+                    {{ operateRecord.create_time }}
+                  </p>
+                </el-card>
+              </el-timeline-item>
+              <el-button size="mini" class="mt-12">更多记录</el-button>
             </el-timeline>
           </div>
         </el-card>
@@ -122,6 +188,10 @@ export default {
   },
   data() {
     return {
+      currentLog: 1,
+      inRecords: [],
+      outRecords: [],
+      operateRecords: [],
       quickDatas: [],
       userInfo: {},
       dateRange: "week",
@@ -181,6 +251,18 @@ export default {
       },
       immediate: true,
     },
+  },
+  mounted() {
+    this.$axios.get("/material/log?category=stocking").then((res) => {
+      this.inRecords = res.data;
+    });
+    this.$axios.get("/material/log?category=out").then((res) => {
+      this.outRecords = res.data;
+    });
+    this.$axios.get("/material/log?category=operate").then((res) => {
+      this.operateRecords = res.data;
+    });
+    this.getVisitStatistic();
   },
   methods: {
     getVisitStatistic() {
