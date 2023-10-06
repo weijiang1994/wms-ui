@@ -59,6 +59,11 @@
             >物料入库</el-button
           >
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="small" @click="batchDrawer = true"
+            >批量入库</el-button
+          >
+        </el-form-item>
       </el-form>
     </div>
     <el-table :data="materialList" height="600px">
@@ -135,12 +140,7 @@
       @page-change="changePage"
       @size-change="changeSize"
     ></pagination>
-    <el-drawer
-      title="添加库存"
-      :visible.sync="drawer"
-      direction="rtl"
-      :before-close="beforeClose"
-    >
+    <el-drawer title="添加库存" :visible.sync="drawer" direction="rtl">
       <el-form ref="form" :model="storage" label-width="80px">
         <el-form-item label="物料名称">
           <el-input v-model="storage.name" disabled></el-input>
@@ -177,17 +177,73 @@
         </el-form-item>
       </el-form>
     </el-drawer>
+    <el-drawer title="物料批量入库" :visible.sync="batchDrawer" direction="rtl">
+      <div style="padding: 20px">
+        <p style="color: #ff1145; font-size: 14px">
+          批量入库请先下载模板文件，并根据模板文件的内容填写需要入库的物料信息！
+        </p>
+        <el-button
+          class="mt-12"
+          type="success"
+          size="small"
+          @click="downloadBatchTemplate"
+          >下载模板文件</el-button
+        >
+        <el-form class="mt-12" label-width="">
+          <el-form-item label="上传文件">
+            <el-upload
+              :headers="batchStocking.headers"
+              ref="uploadBatch"
+              class="upload-demo"
+              drag
+              :auto-upload="false"
+              :action="`${backendUrl}/material/batch/stocking`"
+              :data="batchStocking"
+              :on-success="finishedUpload"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或<em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">
+                仅支持xlsx文件格式，且不超过10M
+              </div>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="同名物料新增库存">
+            <el-radio-group v-model="batchStocking.same">
+              <el-radio :label="true">是</el-radio>
+              <el-radio :label="false">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="small" @click="submitUpload"
+              >提交</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script>
 import Pagination from "@/components/Pagination.vue";
+import { getToken } from "@/util/token";
 export default {
   components: { Pagination },
   name: "MaterialList",
   data() {
     return {
+      backendUrl: process.env.VUE_APP_BASE_BACKEND_URL,
+      batchDrawer: false,
       drawer: false,
       materialList: [],
+      batchStocking: {
+        same: false,
+        headers: {
+          "Access-Token": getToken("Access-Token"),
+        },
+      },
       storage: {
         name: "",
         mid: "",
@@ -218,6 +274,28 @@ export default {
     },
   },
   methods: {
+    finishedUpload(response, file, fileList) {
+      if (response.code === 200) {
+        this.$message.success(response.msg || "批量入库成功！");
+        this.getMaterialList();
+      } else {
+        this.$message.error(response.msg || "批量入库失败！");
+      }
+    },
+    submitUpload() {
+      this.$refs.uploadBatch.submit();
+    },
+    downloadBatchTemplate() {
+      this.$axios
+        .get("/material/batch/template", { responseType: "blob" })
+        .then((res) => {
+          const blob = new Blob([res]);
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "物料批量入库模板.xlsx";
+          link.click();
+        });
+    },
     addStorage(materialId) {
       this.drawer = true;
       const material = this.materialList.find((item) => item.id === materialId);

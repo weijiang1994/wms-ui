@@ -2,7 +2,6 @@ import axios from "axios";
 import { MessageBox, Message } from "element-ui";
 import { getToken, removeToken } from "@/util/token";
 import NProgress from "nprogress";
-import router from "@/router/index.js";
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_BACKEND_URL,
@@ -34,7 +33,10 @@ service.interceptors.response.use(
     NProgress.done();
     const res = response.data;
     // 后端返回code不为200显示错误提示信息
-    if (res.code !== 200) {
+    if (
+      res.code !== 200 &&
+      response.config.url !== "/material/batch/template"
+    ) {
       Message({
         message: res.msg || "发生了错误!",
         type: "error",
