@@ -98,6 +98,12 @@
           ></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="供应商" prop="supply">
+        <el-input
+          placeholder="请输入物料供应商"
+          v-model="form.supply"
+        ></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="addMaterial">入库</el-button>
       </el-form-item>
@@ -120,6 +126,7 @@ export default {
         price: "",
         code: "",
         spec: "",
+        supply: "",
       },
       rules: {
         warehouseId: [
@@ -134,6 +141,9 @@ export default {
         price: [{ required: true, message: "请输入物料单价", trigger: "blur" }],
         code: [{ required: true, message: "请输入物料编码", trigger: "blur" }],
         spec: [{ required: true, message: "请选择物料规格", trigger: "blur" }],
+        supply: [
+          { required: true, message: "请输入物料供应商", trigger: "blur" },
+        ],
       },
     };
   },
