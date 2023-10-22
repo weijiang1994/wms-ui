@@ -189,7 +189,7 @@ export default {
         email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
           {
-            pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/,
+            pattern: /^([a-zA-Z0-9]+[-_.]?)+@[a-zA-Z0-9]+.[a-z]+$/,
             message: "邮箱格式不正确",
             trigger: "blur",
           },
